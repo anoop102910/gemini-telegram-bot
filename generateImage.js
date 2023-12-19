@@ -1,9 +1,8 @@
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
-
+const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
 const MODEL_NAME = "gemini-pro-vision";
 const API_KEY = "AIzaSyD6bNKmf04BqDvt5B_TwOZXSVhmaZI8UPM";
 
-export async function generateImage(image, text) {
+async function generateImage(image, text) {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
@@ -41,8 +40,10 @@ export async function generateImage(image, text) {
       },
     },
   ];
+  console.log(text);
+  let prompt = "";
   if (text) {
-    const prompt = text;
+    prompt = text;
   }
   const result = await model.generateContent([prompt, ...parts], {
     generationConfig,
@@ -51,3 +52,4 @@ export async function generateImage(image, text) {
   const response = result.response;
   return response.text();
 }
+module.exports = generateImage
